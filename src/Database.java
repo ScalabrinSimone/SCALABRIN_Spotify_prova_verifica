@@ -1,6 +1,5 @@
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.SQLException;
+import java.sql.*;
+import java.util.ArrayList;
 
 public class Database {
     private static Database instace = null;
@@ -11,6 +10,9 @@ public class Database {
         try
         {
             connection = DriverManager.getConnection("jdbc:sqlite:database/spotify.db");
+            System.out.println("Connected to database successfully");
+            // IMPORTANTE: abilita foreign key
+            connection.createStatement().execute("PRAGMA foreign_keys = ON;");
         }
         catch (SQLException e)
         {
@@ -20,6 +22,7 @@ public class Database {
         }
     }
 
+
     public static Database getInstance() //synchronized
     {
         if(instace == null)
@@ -28,5 +31,19 @@ public class Database {
         }
         else
             return null;
+    }
+
+    public void close() {
+        try
+        {
+            if (connection != null && !connection.isClosed())
+                connection.close();
+        }
+        catch (SQLException e)
+        {
+            System.err.println("Errore di informazione sulla connessione: " + e.getMessage());
+            System.exit(-1);
+        }
+
     }
 }

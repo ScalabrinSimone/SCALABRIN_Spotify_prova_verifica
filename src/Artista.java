@@ -7,10 +7,10 @@ public class Artista {
     public String nome;
     public String paese;
     public String genere;
-    public List<Canzone> canzoni;
+    public Canzone[] canzoni;
 
     //Costruttori
-    public Artista(int id, String nome, String paese, String genere, List<Canzone> canzoni)
+    public Artista(int id, String nome, String paese, String genere, Canzone[] canzoni)
     {
         this.id = id;
         this.nome = nome;
@@ -18,7 +18,7 @@ public class Artista {
         this.genere = genere;
         this.canzoni = canzoni;
     }
-    public Artista(String nome, String paese, String genere, List<Canzone> canzoni)
+    public Artista(String nome, String paese, String genere, Canzone[] canzoni)
     {
         this.nome = nome;
         this.paese = paese;

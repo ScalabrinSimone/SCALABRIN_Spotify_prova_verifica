@@ -6,6 +6,12 @@ import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.time.Duration;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
 
 public class API {
     private final HttpClient client;
@@ -62,7 +68,6 @@ public class API {
             HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString()); //BodyHandelers è come gestitre il corpo.
             //String serve per dire che ritorna una stringa.
 
-            Gson deserializzatore = new Gson();
             Artista artista = deserializzatore.fromJson(response.body(), Artista.class);
 
             return artista.toString();
@@ -75,9 +80,40 @@ public class API {
     }
 
     // GET /Artista/{id}/canzoni
+    public Canzone[] fetchjCanzoniArtista(int id) throws IOException, InterruptedException
+    {
+        HttpRequest request = HttpRequest.newBuilder()
+                .uri(URI.create(ENDPOINT_BASE + "artisti/" + id + "/canzoni"))
+                .GET()
+                .header("Content-Type", "application/json")
+                .build();
+
+        HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
+
+        if(response.statusCode() == 200 || response.statusCode() == 201)
+        {
+            return deserializzatore.fromJson(response.body(), Canzone[].class);
+        }
+        else
+            return null;
+
+    }
 
     // POST /Artista  (crea Artista)
+    public boolean createArtista(Artista artista) throws IOException, InterruptedException
+    {
+        String body = deserializzatore.toJson(artista);
+        HttpRequest request = HttpRequest.newBuilder()
+                .uri(URI.create(ENDPOINT_BASE + "artisti"))
+                .POST(HttpRequest.BodyPublishers.ofString(body))
+                .header("Content-Type", "application/json")
+                .header("Accept", "application/json") //Ritorna uno status code
+                .build();
 
+        HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
+
+        return response.statusCode() == 200 || response.statusCode() == 201;
+    }
     // PUT /Artista/{id} (aggiorna)
 
     // DELETE /Artista/{id}
