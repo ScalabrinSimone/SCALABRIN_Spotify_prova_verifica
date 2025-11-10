@@ -1,16 +1,38 @@
 import java.util.List;
 
+/**
+ * Rappresentazione di un Artista come nell'API.
+ * Usato sia per deserializzare (Gson) che per salvare nel DB (tramite DAO).
+ */
 public class Artista {
-    //Entità per deserializzare
+    public Integer id;      // id può essere null per nuovi artisti (prima del POST)
+    public String nome;
+    public String paese;
+    public String genere;
+    public List<Canzone> canzoni; // list of songs (può essere null quando non presente)
 
-    private int id;
-    private String nome;
-    private String paese;
-    private String genere;
-    private Canzone[] canzoni;
+    public Artista() {}
+
+    public Artista(String nome, String paese, String genere) {
+        this.nome = nome;
+        this.paese = paese;
+        this.genere = genere;
+    }
+    public Artista(Integer id, String nome, String paese, String genere) {
+        this.id = id;
+        this.nome = nome;
+        this.paese = paese;
+        this.genere = genere;
+    }
 
     @Override
     public String toString() {
-        return id + "\t" + nome + "\t" + paese + "\t" + genere + "\n";
+        return "Artista{" +
+                "id=" + id +
+                ", nome='" + nome + '\'' +
+                ", paese='" + paese + '\'' +
+                ", genere='" + genere + '\'' +
+                ", canzoni=" + (canzoni == null ? "[]" : canzoni.size()) +
+                '}';
     }
 }

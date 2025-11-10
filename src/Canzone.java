@@ -1,12 +1,23 @@
+/**
+ * Rappresentazione di una Canzone, come definita dalla API README.
+ */
 public class Canzone {
-    private int id;
-    private String titolo;
-    private int durata;
-    private int annoPubblicazione;
-    private Artista artista;
+    public Integer id;
+    public String titolo;
+    public Integer durata; // in secondi
+    public Integer annoPubblicazione;
+    public Artista artista; // annidato
+
+    public Canzone() {}
 
     @Override
     public String toString() {
-        return id + "\t" + titolo + "\t" + durata + "\t" + annoPubblicazione + "\t" + artista.toString();
+        return "Canzone{" +
+                "id=" + id +
+                ", titolo='" + titolo + '\'' +
+                ", durata=" + durata +
+                ", annoPubblicazione=" + annoPubblicazione +
+                ", artista=" + (artista != null ? artista.nome : "null") +
+                '}';
     }
 }
