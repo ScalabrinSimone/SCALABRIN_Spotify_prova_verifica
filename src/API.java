@@ -8,13 +8,19 @@ import java.net.http.HttpResponse;
 import java.sql.PreparedStatement;
 
 public class API {
-    private HttpClient client = null;
+    private final HttpClient client;
     private final String ENDPOINT_BASE = "http://localhost:4567/api/";
+    private final Gson deserializzatore;
 
-    public API() {
-        client = HttpClient.newHttpClient();
-    }
+    public API()
+    {
+        this.client = HttpClient.newHttpClient();
+        this.deserializzatore = new Gson();
+    } //Creazione del client
 
+    // ========== Artista ==========
+
+    // GET /Artista
     public String fetchArtisti() {
         //Build richiesta
         HttpRequest request = HttpRequest.newBuilder()
@@ -27,7 +33,6 @@ public class API {
             HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString()); //BodyHandelers è come gestitre il corpo.
             //String serve per dire che ritorna una stringa.
 
-            Gson deserializzatore = new Gson();
             Artista[] artisti = deserializzatore.fromJson(response.body(), Artista[].class);
 
             StringBuilder result = new StringBuilder();
@@ -44,6 +49,7 @@ public class API {
 
     }
 
+    // GET /Artista/{id}
     public String fetchArtista(int id) {
         //Build richiesta
         HttpRequest request = HttpRequest.newBuilder()
@@ -67,4 +73,19 @@ public class API {
         }
 
     }
+
+    // GET /Artista/{id}/canzoni
+
+    // POST /Artista  (crea Artista)
+
+    // PUT /Artista/{id} (aggiorna)
+
+    // DELETE /Artista/{id}
+
+
+    // ========== CANZONI ==========
+
+    // GET /canzoni
+
+    // GET /canzoni/{id}
 }
