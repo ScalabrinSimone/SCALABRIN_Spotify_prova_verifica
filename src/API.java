@@ -3,6 +3,7 @@ import com.google.gson.Gson;
 import java.io.IOException;
 import java.net.URI;
 import java.net.http.HttpClient;
+import java.net.http.HttpHeaders;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 import java.sql.PreparedStatement;
@@ -118,10 +119,44 @@ public class API {
 
     // DELETE /Artista/{id}
 
+    public boolean deleteArtista(int id) throws IOException, InterruptedException{
+        HttpRequest request = HttpRequest.newBuilder()
+                .uri(URI.create(ENDPOINT_BASE + "artisti/" + id))
+                .DELETE()
+                .build();
+
+        HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
+
+        return response.statusCode() == 200 || response.statusCode() == 201;
+    }
+
 
     // ========== CANZONI ==========
 
     // GET /canzoni
+
+    public boolean getCanzoni() throws IOException, InterruptedException{
+        HttpRequest request = HttpRequest.newBuilder()
+                .uri(URI.create(ENDPOINT_BASE + "canzoni"))
+                .GET()
+                .build();
+
+        HttpResponse<String> response =
+                client.send(request, HttpResponse.BodyHandlers.ofString());
+        //BodyHandelers è come gestitre il corpo.
+        //String serve per dire che ritorna una stringa.
+
+        Artista[] artisti = deserializzatore.fromJson(response.body(), Artista[].class);
+
+        StringBuilder result = new StringBuilder();
+        for (Artista artista : artisti) { //Foreach in java
+            result.append(artista.toString());
+        }
+
+
+
+        return true;
+    }
 
     // GET /canzoni/{id}
 }

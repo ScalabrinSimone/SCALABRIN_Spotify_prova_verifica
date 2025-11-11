@@ -8,7 +8,7 @@ public class Main {
 
     public static void main(String[] args) {
 
-        api = new API(); //Client API
+        api = new API(); //Client API //cliente ape bzzz
         try
         {
             db = Database.getInstance(); //Singleton DB
